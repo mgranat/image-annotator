@@ -90,7 +90,7 @@ public class AnnotationsPanel extends JPanel {
         JButton delete = new JButton("Delete");
         delete.addActionListener(new DeleteButtonListener());
 
-        add(delete, BorderLayout.SOUTH);
+        add(delete, BorderLayout.NORTH);
     }
 
     /**
