@@ -2,14 +2,18 @@ package edu.utexas.mgranat.image_annotator.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.util.HashSet;
 import java.util.List;
 
+import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 
 import edu.utexas.mgranat.image_annotator.annotations.IAnnotation;
@@ -91,6 +95,23 @@ public class AnnotationsPanel extends JPanel {
         delete.addActionListener(new DeleteButtonListener());
 
         add(delete, BorderLayout.NORTH);
+        
+        String deleteActionName = "delete selection";
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("DELETE"), deleteActionName);
+        getActionMap().put(deleteActionName, new AbstractAction(){
+			/**
+			 * Default UID
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent ev) {
+				if (!getSelectedAnnotations().isEmpty()) {
+					delete(SingletonManager.getAnnotationsPanel().getAnnList()
+		                            .getSelectedIndices());
+				}
+			}
+        });
     }
 
     /**
