@@ -1,7 +1,9 @@
 package edu.utexas.mgranat.image_annotator.annotations;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.awt.geom.Ellipse2D;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -14,6 +16,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class CircleAnn implements IAnnotation {
+	private static final int DEFAULT_THICKNESS = 20;
+	
     /**
      * Stores the x coordinate of the top left corner of the circle.
      */
@@ -28,6 +32,8 @@ public class CircleAnn implements IAnnotation {
      * Stores the radius of the circle.
      */
     private int m_radius;
+    
+    private int m_thickness;
 
     /**
      * Stores the color used to draw the circle.
@@ -46,18 +52,19 @@ public class CircleAnn implements IAnnotation {
      * @param c
      *            The color used to draw the circle
      */
-    public CircleAnn(final int x, final int y, final int r, final int c) {
+    public CircleAnn(final int x, final int y, final int r, final int c, final int t) {
         m_xCoord = x;
         m_yCoord = y;
         m_radius = r;
         m_color = c;
+        m_thickness = t;
     }
 
     /**
      * No-argument default constructor.
      */
     public CircleAnn() {
-        this(0, 0, 0, Color.BLACK.getRGB());
+        this(0, 0, 0, Color.BLACK.getRGB(), DEFAULT_THICKNESS);
     }
 
     @Override
@@ -112,12 +119,24 @@ public class CircleAnn implements IAnnotation {
     public final void setColor(final int c) {
         m_color = c;
     }
+    
+    public final int getThickness() {
+    	return m_thickness;
+    }
+    
+    @XmlElement
+    public final void setThickness(final int t) {
+    	m_thickness = t;
+    }
 
     @Override
     public final void paint(final Graphics2D g) {
+    	Stroke previousStroke = g.getStroke();
+    	g.setStroke(new BasicStroke(m_thickness));
         g.setColor(new Color(m_color));
         g.draw(new Ellipse2D.Double(m_xCoord - m_radius, m_yCoord - m_radius,
                 m_radius * 2, m_radius * 2));
+        g.setStroke(previousStroke);
     }
 
     @Override

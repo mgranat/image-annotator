@@ -32,6 +32,8 @@ public class XMLAnnotationPersistenceService implements
 	 */
 	private static Logger m_logger = LoggingManager
 			.getLogger(XMLAnnotationPersistenceService.class.getName());
+	
+	private static final String CURRENT_VERSION = "1";
 
 	@Override
 	public final void saveAnnotations(final File imageFile,
@@ -64,7 +66,7 @@ public class XMLAnnotationPersistenceService implements
 			}
 
 			XMLList<IAnnotation> xmlAnnList = new XMLList<IAnnotation>(annList,
-					"1");
+					CURRENT_VERSION);
 
 			xmlListMarshaller.marshal(xmlAnnList, outputFile);
 		} catch (JAXBException ex) {

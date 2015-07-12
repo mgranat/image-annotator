@@ -1,7 +1,9 @@
 package edu.utexas.mgranat.image_annotator.annotations;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -14,6 +16,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class RectAnn implements IAnnotation {
+	private static final int DEFAULT_THICKNESS = 20;
+	
     /**
      * Stores the x coordinate of the top left corner of the rectangle.
      */
@@ -38,6 +42,8 @@ public class RectAnn implements IAnnotation {
      * Stores the color used to draw the rectangle.
      */
     private int m_color;
+    
+    private int m_thickness;
 
     /**
      * Create a rectangle annotation with the specified properties.
@@ -49,19 +55,20 @@ public class RectAnn implements IAnnotation {
      * @param color The color used to draw the rectangle
      */
     public RectAnn(final int x, final int y, final int w, final int h,
-            final int color) {
+            final int color, final int t) {
         m_xCoord = x;
         m_yCoord = y;
         m_width = w;
         m_height = h;
         m_color = color;
+        m_thickness = t;
     }
 
     /**
      * No-arg default constructor.
      */
     public RectAnn() {
-        this(0, 0, 0, 0, Color.BLACK.getRGB());
+        this(0, 0, 0, 0, Color.BLACK.getRGB(), DEFAULT_THICKNESS);
     }
 
     @Override
@@ -134,11 +141,23 @@ public class RectAnn implements IAnnotation {
     public final void setColor(final int color) {
         m_color = color;
     }
+    
+    public final int getThickness() {
+    	return m_thickness;
+    }
+    
+    @XmlElement
+    public final void setThickness(final int t) {
+    	m_thickness = t;
+    }
 
     @Override
     public final void paint(final Graphics2D g) {
+    	Stroke previousStroke = g.getStroke();
+    	g.setStroke(new BasicStroke(m_thickness));
         g.setColor(new Color(m_color));
         g.draw(new Rectangle2D.Double(m_xCoord, m_yCoord, m_width, m_height));
+        g.setStroke(previousStroke);
     }
 
     @Override

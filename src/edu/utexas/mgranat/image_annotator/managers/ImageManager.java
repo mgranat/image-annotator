@@ -38,6 +38,9 @@ public final class ImageManager {
      * @return The dimensions of the current image
      */
     public static Dimension getDimensions() {
+    	if (SingletonManager.getImagePanel().getImage() == null)
+    		return null;
+    	
         int width = SingletonManager.getImagePanel().getImage().getWidth();
         int height = SingletonManager.getImagePanel().getImage().getHeight();
 

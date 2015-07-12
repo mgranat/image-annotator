@@ -23,21 +23,21 @@ public class ImagePanelMouseListener implements MouseListener {
                 .getSelectedAnnotationType();
 
         switch (annotationType) {
-        case TEXT:
+        case Text:
         	TextMouseListener textMouseListener = new TextMouseListener();
         	SingletonManager.getImagePanel().addMouseListener(textMouseListener);
         	textMouseListener.mouseClicked(ev);
             break;
-        case CIRCLE:
+        case Circle:
             break;
-        case RECTANGLE:
+        case Rectangle:
             break;
-        case DOT:
+        case Dot:
         	DotMouseListener dotMouseListener = new DotMouseListener();
         	SingletonManager.getImagePanel().addMouseListener(dotMouseListener);
         	dotMouseListener.mouseClicked(ev);
         	break;
-        case LINE:
+        case Line:
         	break;
         default:
             break;
@@ -62,23 +62,23 @@ public class ImagePanelMouseListener implements MouseListener {
                 .getSelectedAnnotationType();
 
         switch (annotationType) {
-        case TEXT:
+        case Text:
             break;
-        case CIRCLE:
+        case Circle:
             CircleMouseListener circleMouseListener = new CircleMouseListener();
             circleMouseListener.mousePressed(ev);
             SingletonManager.getImagePanel().addMouseListener(circleMouseListener);
             SingletonManager.getImagePanel().addMouseMotionListener(circleMouseListener);
             break;
-        case RECTANGLE:
+        case Rectangle:
         	RectMouseListener rectMouseListener = new RectMouseListener();
         	rectMouseListener.mousePressed(ev);
             SingletonManager.getImagePanel().addMouseListener(rectMouseListener);
             SingletonManager.getImagePanel().addMouseMotionListener(rectMouseListener);
             break;
-        case DOT:
+        case Dot:
         	break;
-        case LINE:
+        case Line:
         	LineMouseListener lineMouseListener = new LineMouseListener();
         	lineMouseListener.mousePressed(ev);
         	SingletonManager.getImagePanel().addMouseListener(lineMouseListener);

@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.utexas.mgranat.image_annotator.annotations.CircleAnn;
+import edu.utexas.mgranat.image_annotator.managers.ImageManager;
 import edu.utexas.mgranat.image_annotator.managers.LoggingManager;
 import edu.utexas.mgranat.image_annotator.managers.MessageManager;
 import edu.utexas.mgranat.image_annotator.managers.SelectionManager;
@@ -36,7 +37,7 @@ public class CircleMouseListener implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mousePressed(MouseEvent ev) {
-		if (ev.getButton() != MouseEvent.BUTTON1) {
+		if (ev.getButton() != MouseEvent.BUTTON1 || !SingletonManager.getImagePanel().hasImage()) {
 			return;
 		}
 
@@ -50,13 +51,20 @@ public class CircleMouseListener implements MouseListener, MouseMotionListener {
 		Point2D src = new Point2D.Double(ev.getX(), ev.getY());
 		Point2D dest = new Point2D.Double();
 		at.transform(src, dest);
+		
+		double width = ImageManager.getDimensions().getWidth();
+		double height = ImageManager.getDimensions().getHeight();
+
+		double multiplier = (width + height) / 2;
+
+		final double scaler = .001;
+
+		multiplier *= scaler;
 
 		SingletonManager.getImagePanel().setTempAnn(
 				new CircleAnn((int) dest.getX(), (int) dest.getY(), 0,
-						SelectionManager.getSelectedColor().getRGB()));
-
-		// SingletonManager.getImagePanel().addMouseMotionListener(new
-		// CircleMouseMotionListener());
+						SelectionManager.getSelectedColor().getRGB(),
+						(int) (SelectionManager.getSelectedGeometrySize() * multiplier)));
 	}
 
 	@Override

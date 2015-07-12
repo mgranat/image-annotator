@@ -52,6 +52,10 @@ public final class SelectionManager {
     public static int getSelectedFontSize() {
         return SingletonManager.getButtonPanel().getSelectedFontSize();
     }
+    
+    public static int getSelectedGeometrySize() {
+        return SingletonManager.getButtonPanel().getSelectedGeometrySize();
+    }
 
     /**
      * Checks if bold is selected.

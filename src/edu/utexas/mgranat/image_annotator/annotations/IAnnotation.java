@@ -27,21 +27,21 @@ public interface IAnnotation {
         /**
          * Circle annotation types.
          */
-        CIRCLE,
+        Circle,
 
         /**
          * Text annotation types.
          */
-        TEXT,
+        Text,
 
         /**
          * Rectangle annotation types.
          */
-        RECTANGLE,
+        Rectangle,
         
-        DOT,
+        Dot,
         
-        LINE
+        Line
     }
 
     /**

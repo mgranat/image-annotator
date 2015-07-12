@@ -7,7 +7,11 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 
 import edu.utexas.mgranat.image_annotator.annotations.IAnnotation;
 import edu.utexas.mgranat.image_annotator.graphics.SolidColorIcon;
@@ -30,27 +34,22 @@ public class ButtonPanel extends JPanel {
      * UID for serialization. Not used.
      */
     private static final long serialVersionUID = 1L;
-
-    /**
-     * Stores the font size choices presented by the font size combo box.
-     */
-    private static final Integer[] FONT_SIZE_CHOICES = {1, 2, 3, 4, 5, 6, 7, 8,
-        9, 10, 11, 12};
+    
+    private static final int GEOMETRY_DEFAULT_SIZE = 3;
+    private static final int TEXT_DEFAULT_SIZE = 20;
 
     /**
      * Button for bringing up the color chooser.
      */
     private JButton m_colorChooser;
+    
+    private JSpinner m_geometrySizeSpinner;
+    private JSpinner m_textSizeSpinner;
 
     /**
      * Combo box for choosing annotation types.
      */
     private JComboBox<IAnnotation.Type> m_annotationChooser;
-
-    /**
-     * Combo box for choosing font size.
-     */
-    private JComboBox<Integer> m_fontSizeChooser;
 
     /**
      * Check box for selecting a bold font.
@@ -106,9 +105,18 @@ public class ButtonPanel extends JPanel {
         m_colorChooser.addActionListener(new ColorChooserButtonListener());
 
         add(m_colorChooser);
-
-        m_fontSizeChooser = new JComboBox<Integer>(FONT_SIZE_CHOICES);
-        add(m_fontSizeChooser);
+        
+        add(new JLabel("Geometry"));
+        
+        SpinnerModel geometrySpinnerModel = new SpinnerNumberModel(GEOMETRY_DEFAULT_SIZE, 0, 100, 1);
+        m_geometrySizeSpinner = new JSpinner(geometrySpinnerModel);
+        add(m_geometrySizeSpinner);
+        
+        add(new JLabel("Text"));
+        
+        SpinnerModel textSpinnerModel = new SpinnerNumberModel(TEXT_DEFAULT_SIZE, 0, 100, 1);
+        m_textSizeSpinner = new JSpinner(textSpinnerModel);
+        add(m_textSizeSpinner);
 
         m_boldCheckBox = new JCheckBox("B");
         add(m_boldCheckBox);
@@ -154,7 +162,11 @@ public class ButtonPanel extends JPanel {
      * @return The current selected font size
      */
     public final int getSelectedFontSize() {
-        return (int) m_fontSizeChooser.getSelectedItem();
+        return (int) m_textSizeSpinner.getValue();
+    }
+    
+    public final int getSelectedGeometrySize() {
+    	return (int) m_geometrySizeSpinner.getValue();
     }
 
     /**

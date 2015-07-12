@@ -25,6 +25,9 @@ public class DotMouseListener implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent ev) {
+		if (!SingletonManager.getImagePanel().hasImage())
+			return;
+		
 		AffineTransform at = SingletonManager.getImagePanel()
 				.getTransformClone();
 		try {
@@ -45,14 +48,14 @@ public class DotMouseListener implements MouseListener {
 
 		double multiplier = (width + height) / 2;
 
-		final double scaler = .002;
+		final double scaler = .001;
 
 		multiplier *= scaler;
 
-		int size = (int) (((double) SelectionManager.getSelectedFontSize()) * multiplier);
+		int size = (int) (((double) SelectionManager.getSelectedGeometrySize()) * multiplier);
 
 		((DotAnn) SingletonManager.getImagePanel().getTempAnn())
-				.setRadius(size);
+				.setRadius(size/2);
 		SingletonManager.getImagePanel().addAnnotationObject(
 				SingletonManager.getImagePanel().getTempAnn());
 		SingletonManager.getImagePanel().repaint();

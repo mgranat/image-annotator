@@ -147,13 +147,13 @@ public class PlaintextAnnotationPersistenceService
         case "CircleAnn":
             output = new CircleAnn(Integer.parseInt(arr[i++]),
                     Integer.parseInt(arr[i++]), Integer.parseInt(arr[i++]),
-                    Integer.parseInt(arr[i++]));
+                    Integer.parseInt(arr[i++]), 20);
             break;
         case "RectAnn":
             output = new RectAnn(Integer.parseInt(arr[i++]),
                     Integer.parseInt(arr[i++]), Integer.parseInt(arr[i++]),
                     Integer.parseInt(arr[i++]),
-                            Integer.parseInt(arr[i++]));
+                            Integer.parseInt(arr[i++]), 20);
             break;
         default:
             throw new UnrecognizedAnnotationException(
