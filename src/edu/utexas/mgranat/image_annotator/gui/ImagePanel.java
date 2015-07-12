@@ -4,6 +4,8 @@ import java.awt.BasicStroke;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -31,6 +33,7 @@ import edu.utexas.mgranat.image_annotator.annotations.TextAnn;
 import edu.utexas.mgranat.image_annotator.listeners.ImagePanelMouseListener;
 import edu.utexas.mgranat.image_annotator.listeners.ZoomAndPanListener;
 import edu.utexas.mgranat.image_annotator.managers.ConfigManager;
+import edu.utexas.mgranat.image_annotator.managers.ImageManager;
 import edu.utexas.mgranat.image_annotator.managers.LoggingManager;
 import edu.utexas.mgranat.image_annotator.managers.MessageManager;
 import edu.utexas.mgranat.image_annotator.managers.SelectionManager;
@@ -104,6 +107,22 @@ public class ImagePanel extends JPanel {
 
         // annotation listener
         addMouseListener(new ImagePanelMouseListener());
+        
+        // RMB listener
+        addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {}
+			@Override
+			public void mouseEntered(MouseEvent arg0) {}
+			@Override
+			public void mouseExited(MouseEvent arg0) {}
+			@Override
+			public void mousePressed(MouseEvent arg0) {}
+			@Override
+			public void mouseReleased(MouseEvent ev) {
+				ImageManager.nextImage();
+			}
+        });
 
         m_tempAnn = null;
         m_annotations = new ArrayList<IAnnotation>();
