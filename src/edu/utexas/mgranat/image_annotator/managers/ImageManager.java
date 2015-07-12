@@ -105,4 +105,29 @@ public final class ImageManager {
 
         updateImage(filesInDir[outputFileIndex]);
     }
+    
+    public static void previousImage() {
+    	if (!SingletonManager.getImagePanel().hasImage()) {
+            return;
+        }
+
+        File[] filesInDir = SingletonManager.getImagePanel().getImageFile()
+                .getParentFile().listFiles(new ImageFileFilter());
+
+        int i = 0;
+        while (i < filesInDir.length
+                && !SingletonManager.getImagePanel().getImageFile().getPath()
+                        .equals(filesInDir[i].getPath())) {
+            i++;
+        }
+
+        int outputFileIndex = 0;
+        if (i == 0) {
+            outputFileIndex = filesInDir.length - 1;
+        } else {
+            outputFileIndex = i - 1;
+        }
+
+        updateImage(filesInDir[outputFileIndex]);
+    }
 }

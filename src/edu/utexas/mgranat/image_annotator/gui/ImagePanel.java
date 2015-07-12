@@ -4,6 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
@@ -25,8 +26,11 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.FileImageOutputStream;
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 
 import edu.utexas.mgranat.image_annotator.annotations.IAnnotation;
 import edu.utexas.mgranat.image_annotator.annotations.TextAnn;
@@ -121,6 +125,34 @@ public class ImagePanel extends JPanel {
 			@Override
 			public void mouseReleased(MouseEvent ev) {
 				ImageManager.nextImage();
+			}
+        });
+        
+        String nextActionName = "next image";
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("RIGHT"), nextActionName);
+        getActionMap().put(nextActionName, new AbstractAction(){
+			/**
+			 * Default UID
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent ev) {
+				ImageManager.nextImage();
+			}
+        });
+        
+        String previousActionName = "previous image";
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("LEFT"), previousActionName);
+        getActionMap().put(previousActionName, new AbstractAction(){
+			/**
+			 * Default UID
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent ev) {
+				ImageManager.previousImage();
 			}
         });
 
