@@ -377,7 +377,7 @@ public class ImagePanel extends JPanel {
                 double yScale = ((double) getSize().height)
                         / m_image.getHeight();
 
-                if (xScale < yScale) {
+                if (xScale > yScale) {
                     g.scale(yScale, yScale);
                 } else {
                     g.scale(xScale, xScale);
