@@ -124,7 +124,9 @@ public class ImagePanel extends JPanel {
 			public void mousePressed(MouseEvent arg0) {}
 			@Override
 			public void mouseReleased(MouseEvent ev) {
-				ImageManager.nextImage();
+				if (ev.getModifiers() == MouseEvent.BUTTON3_MASK) {
+					ImageManager.nextImage();
+				}
 			}
         });
         
