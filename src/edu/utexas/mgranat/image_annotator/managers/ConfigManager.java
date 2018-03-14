@@ -322,4 +322,12 @@ public final class ConfigManager {
             ConfigManager.writeNewConfig();
         }
     }
+    
+    /**
+     * Gets the config file
+     * @return The config file
+     */
+    public static File getConfigFile() {
+    	return new File(CONFIG_DIR, CONFIG_NAME);
+    }
 }
