@@ -37,6 +37,7 @@ public final class ConfigManager {
         m_defaultProperties.setProperty("window.zoom.min", "-20");
         m_defaultProperties.setProperty("window.zoom.max", "10");
         m_defaultProperties.setProperty("window.zoom.multiplier", "1.2");
+        m_defaultProperties.setProperty("window.start_maximized", "true");
     }
 
     /**
@@ -224,6 +225,18 @@ public final class ConfigManager {
                     m_defaultProperties.getProperty(key));
             altered = true;
         }
+        
+        /* Boolean */
+        key = "window.start_maximized";
+        value = m_currentProperties.getProperty(key);
+        
+        if (!ConfigManager.isBoolean(value)) {
+            m_logger.log(Level.INFO, "Invalid configuration detected, \""
+                    + key + "\" must be a boolean value");
+            m_currentProperties.setProperty(key,
+                    m_defaultProperties.getProperty(key));
+            altered = true;
+        }
 
         if (altered) {
             m_logger.log(Level.INFO, "Invalid configuration detected, "
@@ -283,6 +296,10 @@ public final class ConfigManager {
     private static boolean isNonNegativeFloat(final String property) {
         return Double.parseDouble(property) >= 0;
     }
+    
+    private static boolean isBoolean(final String property) {
+    	return (property.equals("true") || property.equals("false"));
+    }
 
     /**
      * Writes the current properties to file.
@@ -311,7 +328,14 @@ public final class ConfigManager {
      * @return A validated value for the provided key
      */
     public static String getProperty(final String key) {
-        return m_currentProperties.getProperty(key);
+    	String property = m_currentProperties.getProperty(key);
+    	if (property == null)
+    		property = m_defaultProperties.getProperty(key);
+    		if (property != null) {
+    			m_currentProperties.setProperty(key, property);
+    			m_altered = true;
+    		}
+        return property;
     }
 
     /**

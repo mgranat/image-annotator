@@ -2,6 +2,10 @@ package edu.utexas.mgranat.image_annotator.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 
 import javax.swing.JFrame;
 
@@ -43,9 +47,13 @@ public class ImageAnnotatorFrame extends JFrame {
     public ImageAnnotatorFrame() {
         setTitle("Image Annotator");
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        setSize(m_defaultSize);
-        setLocationRelativeTo(null);
-
+        
+        setVisible(true);
+        if (ConfigManager.getProperty("window.start_maximized").equals("true"))
+        	setExtendedState(Frame.MAXIMIZED_BOTH);
+        else
+        	setSize(m_defaultSize);
+        
         getContentPane().setLayout(new BorderLayout());
 
         addWindowListener(new AutosaveWindowAdapter());

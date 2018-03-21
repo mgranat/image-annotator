@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import javax.swing.UIManager;
 
+import edu.utexas.mgranat.image_annotator.file_choosers.AnnotationFileFilter;
 import edu.utexas.mgranat.image_annotator.file_choosers.ImageFileFilter;
 import edu.utexas.mgranat.image_annotator.managers.ConfigManager;
 import edu.utexas.mgranat.image_annotator.managers.ImageManager;
@@ -55,6 +56,17 @@ public final class ImageAnnotator {
 
             if (file.exists() && new ImageFileFilter().accept(file)) {
                 toLoad = file;
+            }
+            
+            if (file.exists() && new AnnotationFileFilter().accept(file)) {
+            	String name = file.getName().substring(0, file.getName().lastIndexOf('.'));
+            	File directory = file.getParentFile();
+            	for (File f : directory.listFiles(new ImageFileFilter())) {
+            		if (f.getName().substring(0, f.getName().lastIndexOf('.')).equals(name)) {
+            			toLoad = f;
+            			break;
+            		}
+            	}
             }
         }
 
