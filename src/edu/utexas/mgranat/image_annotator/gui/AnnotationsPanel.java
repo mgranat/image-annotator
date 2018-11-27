@@ -2,6 +2,7 @@ package edu.utexas.mgranat.image_annotator.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.util.HashSet;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -20,6 +22,7 @@ import edu.utexas.mgranat.image_annotator.annotations.IAnnotation;
 import edu.utexas.mgranat.image_annotator.listeners
     .AnnotationListSelectionListener;
 import edu.utexas.mgranat.image_annotator.listeners.DeleteButtonListener;
+import edu.utexas.mgranat.image_annotator.listeners.RepaintImagePanelListener;
 import edu.utexas.mgranat.image_annotator.managers.ConfigManager;
 import edu.utexas.mgranat.image_annotator.managers.SingletonManager;
 
@@ -67,6 +70,8 @@ public class AnnotationsPanel extends JPanel {
      * Stores the set of selected annotations.
      */
     private HashSet<IAnnotation> m_selectedAnnotations;
+    
+    private JCheckBox m_displayAnnotationsCheckbox;
 
     /**
      * Set up the panel and appropriate listeners.
@@ -90,11 +95,20 @@ public class AnnotationsPanel extends JPanel {
 
         setLayout(new BorderLayout());
         add(scrollPane, BorderLayout.CENTER);
+        
+        JPanel annotationsButtonsPanel = new JPanel();
+        annotationsButtonsPanel.setLayout(new GridLayout(0, 1));
+        
+        m_displayAnnotationsCheckbox = new JCheckBox("Display");
+        m_displayAnnotationsCheckbox.setSelected(true);
+        m_displayAnnotationsCheckbox.addActionListener(new RepaintImagePanelListener());
+        annotationsButtonsPanel.add(m_displayAnnotationsCheckbox);
 
         JButton delete = new JButton("Delete");
         delete.addActionListener(new DeleteButtonListener());
+        annotationsButtonsPanel.add(delete);
 
-        add(delete, BorderLayout.NORTH);
+        add(annotationsButtonsPanel, BorderLayout.NORTH);
         
         String deleteActionName = "delete selection";
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("DELETE"), deleteActionName);
@@ -146,6 +160,10 @@ public class AnnotationsPanel extends JPanel {
      */
     public final DefaultListModel<IAnnotation> getModelObjects() {
         return m_listModel;
+    }
+    
+    public final boolean getDisplayAnnotationsChecked() {
+    	return m_displayAnnotationsCheckbox.isSelected();
     }
 
     /**

@@ -450,8 +450,10 @@ public class ImagePanel extends JPanel {
             g.setStroke(new BasicStroke((float) strokeSize));
         }
 
-        for (IAnnotation ann : m_annotations) {
-            ann.paint(g);
+        if (SingletonManager.getAnnotationsPanel().getDisplayAnnotationsChecked()) {
+	        for (IAnnotation ann : m_annotations) {
+	            ann.paint(g);
+	        }
         }
     }
 
