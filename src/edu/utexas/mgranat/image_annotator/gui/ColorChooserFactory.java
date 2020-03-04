@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Insets;
-import java.awt.LayoutManager;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
@@ -12,13 +11,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.AbstractButton;
-import javax.swing.Box;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
-
-import edu.utexas.mgranat.image_annotator.graphics.SolidColorIcon;
 
 public class ColorChooserFactory
 {
@@ -49,10 +45,11 @@ class HSVColorChooserPanel extends AbstractColorChooserPanel implements ActionLi
 		final int diameterInPixels = 220;
 		final float xScaleFactor = 1.2f;
 		final float yScaleFactor = 1.2f;
+		final int extraVerticalSpace = (int) (0.2f * diameterInPixels);
 		
 		Dimension panelSize = new Dimension(
 				(int) (diameterInPixels * xScaleFactor), 
-				(int) (diameterInPixels * yScaleFactor));
+				(int) (diameterInPixels * yScaleFactor) + extraVerticalSpace);
 		setPreferredSize(panelSize);
 	}
 	
@@ -115,6 +112,29 @@ class HSVColorChooserPanel extends AbstractColorChooserPanel implements ActionLi
 			}
 		}
 		
+		final int grayscaleButtons = 6;
+		
+		y += buttonDiameter / 2;
+		buttonsOnRow = grayscaleButtons;
+		int x = (int)((diameterInPixels / 2) - ((double) buttonsOnRow / 2) * buttonDiameter + buttonDiameter / 2);
+		
+		for (int i = 0; i < buttonsOnRow; i++)
+		{
+			Color color = Color.getHSBColor(0.0f, 0.0f, ((float) i) / buttonsOnRow);
+			JButton button = new HexagonButton(color);
+			add(button);
+			Dimension size = button.getPreferredSize();
+			button.setBounds(
+					(int)(insets.left + x - (double) buttonDiameter / 2),
+					insets.bottom + y,
+					size.width,
+					size.height);
+			
+			button.setActionCommand(Integer.toString(color.getRGB()));
+			button.addActionListener(this);			
+			
+			x += buttonDiameter;
+		}
 	}
 
 	@Override
