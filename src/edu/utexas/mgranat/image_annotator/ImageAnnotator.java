@@ -15,26 +15,19 @@ import edu.utexas.mgranat.image_annotator.managers.MessageManager;
 import edu.utexas.mgranat.image_annotator.managers.SavedStateManager;
 import edu.utexas.mgranat.image_annotator.managers.SingletonManager;
 
-/**
- * Image Annotator application.
- *
- * @author mgranat
- */
 public final class ImageAnnotator {
-    /**
-     * Logger for this class.
-     */
-    private static Logger m_logger =
-            LoggingManager.getLogger(ImageAnnotator.class.getName());
+    private static Logger m_logger = LoggingManager.getLogger(ImageAnnotator.class.getName());
+
+    private ImageAnnotator() {};
 
     /**
-     * Private constructor to prevent instantiation.
-     */
-    private ImageAnnotator() {
-    };
-
-    /**
-     * Start the application. Create default properties if nonexistent.
+     * Start the application. The main method performs the following operations:
+     *  - Set the look and feel
+     *  - Parse command line arguments for an image to load
+     *  - Load the configuration, creating a default one if none is found
+     *  - Load the saved state, creating a default one if none is found
+     *  - Initialize the application
+     *  - Load the image specified in the command line arguments, if any
      *
      * @param args Command line arguments
      */
@@ -43,10 +36,8 @@ public final class ImageAnnotator {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             m_logger.log(Level.INFO, "Set look and feel to system value");
         } catch (Exception ex) {
-            m_logger.log(Level.WARNING,
-                    "Unable to initialize look and feel", ex);
-            MessageManager.showMessage(
-                    "Error initializing application look and feel");
+            m_logger.log(Level.WARNING, "Unable to initialize look and feel", ex);
+            MessageManager.showMessage("Error initializing application look and feel");
         }
 
         File toLoad = null;
@@ -71,17 +62,14 @@ public final class ImageAnnotator {
         }
 
         if (!ConfigManager.existsConfigFile()) {
-            m_logger.log(Level.INFO,
-                    "No config file found, creating one with default values");
+            m_logger.log(Level.INFO, "No config file found, creating one with default values");
             ConfigManager.createDefaultConfigFile();
         }
 
         ConfigManager.loadConfiguration();
 
         if (!SavedStateManager.existsSavedStateFile()) {
-            m_logger.log(Level.INFO,
-                    "No saved state file found, creating one with default"
-                    + "values");
+            m_logger.log(Level.INFO, "No saved state file found, creating one with default values");
             SavedStateManager.createDefaultSavedStateFile();
         }
 
@@ -90,8 +78,7 @@ public final class ImageAnnotator {
         SingletonManager.init();
 
         if (toLoad != null) {
-            m_logger.log(Level.INFO,
-                    "Command line argument detected, loading file");
+            m_logger.log(Level.INFO, "Command line argument detected, loading file");
             ImageManager.updateImage(toLoad);
         }
     }
