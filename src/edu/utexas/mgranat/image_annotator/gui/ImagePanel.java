@@ -466,6 +466,7 @@ public class ImagePanel extends JPanel {
     public final void addAnnotationObject(final IAnnotation ann) {
         m_annotations.add(ann);
         m_altered = true;
+        SingletonManager.getAnnotationsPanel().clearSelectedAnnotations();
         SingletonManager.getAnnotationsPanel().updateSelection();
     }
 
