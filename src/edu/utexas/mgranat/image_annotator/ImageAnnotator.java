@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import edu.utexas.mgranat.image_annotator.file_choosers.AnnotationFileFilter;
@@ -60,12 +61,26 @@ public final class ImageAnnotator {
 
         SavedStateManager.loadProperties();
 
-        SingletonManager.init();
+        // Creation of Swing components must occur on the event dispatch thread
+        SwingUtilities.invokeLater(new ImageAnnotator().new InitializationRunnable(toLoad));
+    }
+    
+    class InitializationRunnable implements Runnable {
+    	private File m_imageFile;
+    	
+    	public InitializationRunnable(File imageFile) {
+    		m_imageFile = imageFile;
+    	}
 
-        if (toLoad != null) {
-            m_logger.log(Level.INFO, "Command line argument detected, loading file");
-            ImageManager.updateImage(toLoad);
-        }
+		@Override
+		public void run() {
+			SingletonManager.init();
+
+	        if (m_imageFile != null) {
+	            m_logger.log(Level.INFO, "Command line argument detected, loading file");
+	            ImageManager.updateImage(m_imageFile);
+	        }
+		}
     }
     
     private static File getImageFileFromImageFilenameOrAnnotationFilename(String filename)
