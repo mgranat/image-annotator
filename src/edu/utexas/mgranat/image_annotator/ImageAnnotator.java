@@ -23,11 +23,11 @@ public final class ImageAnnotator {
     /**
      * Start the application. The main method performs the following operations:
      *  - Set the look and feel
-     *  - Parse command line arguments for an image to load
+     *  - Parse command line arguments for a file to load
      *  - Load the configuration, creating a default one if none is found
      *  - Load the saved state, creating a default one if none is found
      *  - Initialize the application
-     *  - Load the image specified in the command line arguments, if any
+     *  - Load the file specified in the command line arguments, if any
      *
      * @param args Command line arguments
      */
@@ -42,23 +42,8 @@ public final class ImageAnnotator {
 
         File toLoad = null;
         if (args.length > 0) {
-            String filepath = args[0];
-            File file = new File(filepath);
-
-            if (file.exists() && new ImageFileFilter().accept(file)) {
-                toLoad = file;
-            }
-            
-            if (file.exists() && new AnnotationFileFilter().accept(file)) {
-            	String name = file.getName().substring(0, file.getName().lastIndexOf('.'));
-            	File directory = file.getParentFile();
-            	for (File f : directory.listFiles(new ImageFileFilter())) {
-            		if (f.getName().substring(0, f.getName().lastIndexOf('.')).equals(name)) {
-            			toLoad = f;
-            			break;
-            		}
-            	}
-            }
+            String filename = args[0];
+            toLoad = ImageAnnotator.getImageFileFromImageFilenameOrAnnotationFilename(filename);
         }
 
         if (!ConfigManager.existsConfigFile()) {
@@ -81,5 +66,29 @@ public final class ImageAnnotator {
             m_logger.log(Level.INFO, "Command line argument detected, loading file");
             ImageManager.updateImage(toLoad);
         }
+    }
+    
+    private static File getImageFileFromImageFilenameOrAnnotationFilename(String filename)
+    {
+    	File file = new File(filename);
+
+    	// File is an acceptable image
+        if (file.exists() && new ImageFileFilter().accept(file)) {
+        	return file;
+        }
+        
+        // File is an annotation and we need to find the associated image
+        if (file.exists() && new AnnotationFileFilter().accept(file)) {
+        	String name = file.getName().substring(0, file.getName().lastIndexOf('.'));
+        	File directory = file.getParentFile();
+        	for (File imageFile : directory.listFiles(new ImageFileFilter())) {
+        		if (imageFile.getName().substring(0, imageFile.getName().lastIndexOf('.')).equals(name)) {
+        			return imageFile;
+        		}
+        	}
+        }
+        
+        // Not a valid image or annotation file
+        return null;
     }
 }
