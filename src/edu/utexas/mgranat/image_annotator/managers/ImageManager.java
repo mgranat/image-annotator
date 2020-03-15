@@ -24,14 +24,15 @@ public final class ImageManager {
      *            The new image file to be displayed
      */
     public static void updateImage(final File newImageFile) {
+    	if (null == newImageFile) {
+    		return;
+    	}
+    	
         SingletonManager.getImagePanel().loadImageFile(newImageFile);
         SingletonManager.getImagePanel().repaint();
 
-        SingletonManager.setTitle("Image Annotator - "
-                + newImageFile.getPath()
-                        .substring(
-                                newImageFile.getPath().lastIndexOf(
-                                        File.separatorChar) + 1));
+        SingletonManager.setTitle("Image Annotator - " + newImageFile.getPath().substring(
+        		newImageFile.getPath().lastIndexOf(File.separatorChar) + 1));
     }
 
     /**
